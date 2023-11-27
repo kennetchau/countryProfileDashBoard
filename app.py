@@ -5,30 +5,18 @@
 """
 
 ## import modules
-from dash import Dash, html, dash_table, dcc
+from dash import Dash, html, dash_table, dcc,Input,Output, callback
 import plotly.express as px
 import pandas as pd
 
 df = pd.read_csv("data/WorldPop.csv", index_col = 0)
-df2 = df.loc[(df['Population, density and surface area'] == "Total, all countries or areas") & (df['Series'] == "Population mid-year estimates (millions)")]
 
 ## initiate the app
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = Dash(__name__, external_stylesheets=external_stylesheets)
+app = Dash(__name__)
 
 colors = {
     'textcolor': '#777777'
 }
-
-## Create a function to make graphs
-def linePlot(dataFrame, xValue:str, yValue:str, titleName:str,xAlias=None, yAlias=None):
-    fig = px.line(dataFrame, x=xValue, y=yValue, title=titleName)
-    if xAlias != None:
-        fig.update_layout(xaxis_title = xAlias)
-    if yAlias != None:
-        fig.update_layout(yaxis_title = yAlias)
-    return fig
-
 
 ## App layout
 app.layout = html.Div(children=[
@@ -41,13 +29,29 @@ app.layout = html.Div(children=[
     ),
     html.Div(
         children = [
-            dcc.Graph(
-                id = "World Population",
-                figure = linePlot(df2, "Year", "Value", titleName = "World Population overtime" ,yAlias="Population (millions)")
-            )
+            dcc.Slider(
+                df['Year'].min(),
+                df['Year'].max(),
+                step = None,
+                value=df['Year'].min(),
+                marks={str(year): str(year) for year in df['Year'].unique()},
+                id='year-slider'
+            ),
+            dcc.Graph(id = "WorldPopulation_Graph",),
         ]
     )
 ])
+
+## Create callback
+@callback(
+    Output('WorldPopulation_Graph', 'figure'),
+    Input('year-slider','value')
+)
+def update_figure(selected_year):
+    filtered_df = df[(df['Series'] == "Population mid-year estimates (millions)") & (df['Year'] == selected_year)]
+    fig = px.bar(filtered_df, x = 'Value', y="Population, density and surface area", orientation='h')
+    fig.update_layout(transition_duration = 500)
+    return fig
 
 # Run the app
 if __name__ == '__main__':
