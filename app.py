@@ -9,7 +9,7 @@ from dash import Dash, html, dash_table, dcc,Input,Output, callback
 import plotly.express as px
 import pandas as pd
 
-df = pd.read_csv("data/WorldPop.csv", index_col = 0)
+df = pd.read_json("data/CountryData.json")
 
 ## initiate the app
 app = Dash(__name__)
@@ -21,7 +21,7 @@ colors = {
 ## App layout
 app.layout = html.Div(children=[
     html.H1(
-        children = "World Population",
+        children = "Country Data",
         style = {
             'textAlign': 'center',
             'color': colors['textcolor']
@@ -48,8 +48,8 @@ app.layout = html.Div(children=[
     Input('year-slider','value')
 )
 def update_figure(selected_year):
-    filtered_df = df[(df['Series'] == "Population mid-year estimates (millions)") & (df['Year'] == selected_year)]
-    fig = px.bar(filtered_df, x = 'Value', y="Population, density and surface area", orientation='h')
+    filtered_df = df[(df['Series Code'] == "NY.GDP.MKTP.KD") & (df['Year'] == selected_year)].sort_values(by='value', ascending = False).head(10)
+    fig = px.bar(filtered_df, x = 'value', y="Country Name", orientation='h', labels = {'value':"GDP (constant 2015 US$)"})
     fig.update_layout(transition_duration = 500)
     return fig
 
