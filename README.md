@@ -1,7 +1,7 @@
 # CountryProfileDashBoard
 
 ## Overview
-This is intended to be a dashboard that allow user to browse country data gathered from the United Nation Databank.
+This is intended to be a dashboard that allow user to browse country data gathered from the World Bank Databank.
 
 ## Running instruction
 <ol>
