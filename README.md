@@ -10,7 +10,7 @@ This is intended to be a dashboard that allow user to browse country data gather
 </ol>
 
 ## Author
-<ul style='list-style-type:none;'>
+<ul style='list-style-type:None;'>
   <li>Ming Yin Kenneth Chau: kenetx@proton.me</li>
   <li>Nicholas Wong: nwong1@ualberta.ca</li>
 </ul>
