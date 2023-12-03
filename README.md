@@ -11,4 +11,4 @@ This is intended to be a dashboard that allow user to browse country data gather
 
 ## Author
 Ming Yin Kenneth Chau & Nicholas Wong
-email: kenetx@proton.me
+email: kenetx@proton.me & nwong1@ualberta.ca
